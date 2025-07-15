@@ -141,19 +141,43 @@ def mantra():
     else:
         return render_template("mantra.html", logged_in=False)
 
-@app.route("/record", methods=["GET", "POST"])
+@app.route("/record")
 def record():
     if "user_id" in session:
+        return render_template("record.html")
+    else:
+        return redirect("/register") 
 
-        # If server was requested with a post
-        if request.method == "POST":
+@app.route('/save_mantra', methods=['POST'])
+def save_mantra():
+    if request.method == "POST":
+        try:
+            if "user_id" not in session:
+                return jsonify({"error": "User not logged in"}), 401
+            
+            # Get json data
             data = request.get_json()
+            if not data:
+                return jsonify({"error": "No JSON data received"}), 400
+
+            # Get mantra value from json response
             mantra_to_save = data.get("mantra_recorded")
+
+            if not mantra_to_save:
+                return jsonify({"error": "Mantra data missing"}), 400
 
             # Save mantra in SQL database
             db.execute("INSERT INTO mantras(id, mantra) VALUES(?, ?)", session["user_id"], mantra_to_save)
-            return render_template("record.html")
-        else:
-           return render_template("record.html")
+            return jsonify({"message": "Mantra saved successfuly!"}), 200  
+        
+        except Exception as e:
+            print(f"Eror saving mantra: {e}") 
+            return jsonify({"error": "An unexpected error occuered. Check terminal in backend"}), 500
+    
+@app.route('/chanting', methods=['POST'])
+def chanting():
+    selected_mantra_to_chant = request.form.get('selected_mantra')
+    if not selected_mantra_to_chant:
+        return redirect('/mantra')
     else:
-        return redirect("/register") 
+        return render_template('automatic_chanting.html', selected_mantra_to_chant=selected_mantra_to_chant) 

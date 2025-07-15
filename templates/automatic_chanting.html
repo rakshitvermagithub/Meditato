@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Chanting
+{% endblock %}
+
+{% block main %}
+<div class="bg-gray-100 min-h-[calc(100vh_-_108px)] flex items-center justify-center relative">
+
+    <!-- Prompting at start for user's target count -->
+    <div id="targetPrompt" class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex flex-col items-center justify-center text-white z-50">
+        <div class="bg-white text-gray-800 p-8 rounded-md shadow-lg">
+            <p class="text-xl font-semibold mb-4">What's your target count today?</p>
+            <input type="number" id="targetCountInput" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter your target" value="5">
+            <button id="startChantingButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4">Start Chanting</button>
+        </div>
+    </div>
+
+    <!-- Chant -->
+    <div id="chantingSection" class="hidden flex flex-col items-center justify-center">
+
+        <!-- Quit chanting button -->
+        <div class="absolute top-4 right-4">
+            <a href="/mantra" class="text-gray-600 hover:text-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Counter display -->
+        <div class="mb-4">
+            <p class="text-xl text-gray-700">Count: <span id="chantingCounter">0</span></p>
+        </div>
+
+        <!-- Selected Mantra Display -->
+        <h2 id="mantraDisplay" class="text-6xl font-bold text-gray-800 text-center" style="font-size: max(6vh, 6vw);">
+            {{ selected_mantra_to_chant }}
+        </h2>
+        
+        <!-- Brief comment from our side -->
+        <div class="mt-2">
+            <p class="text-sm text-gray-500 underline">Start chanting, we'll let you know when you are done</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %} 
+  <script src="../static/script.js"></script> 
+{% endblock %}
