@@ -7,34 +7,34 @@
 {% block main %}
   <!-- Hero Section -->
   <header class="text-center py-16 px-4">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">Hello, Rakshit</h1>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Hey Dear User</h1>
     <p class="text-lg text-gray-700">Ready to meditate today?</p>
   </header>
 
   <!-- Meditation Options -->
   <section class="px-6 md:px-20 pb-16">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
       <!-- Card 1 -->
       <form action="/mantra" method="get">
-				<div class="bg-gray-100 rounded-xl p-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+				<div class="cursor-pointer bg-gray-100 rounded-xl p-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
         	<button type="submit" >
 						<h2 class="text-xl font-semibold mb-2">Mantra Meditation</h2>
         		<p class="text-sm text-gray-600">Chant or listen to sacred sounds to focus.</p>
 					</button>
       	</div>	
       </form>
-      
 
       <!-- Card 2 -->
-      <div class="bg-gray-100 rounded-xl p-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+      <div class="bg-gray-200 rounded-xl border text-gray-600 border-gray-300 p-6 opacity-60">
         <h2 class="text-xl font-semibold mb-2">Breathing Meditation</h2>
-        <p class="text-sm text-gray-600">Focus on your breath to calm your mind.</p>
+        <p class="text-sm">Focus on your breath to calm your mind.</p>
       </div>
 
       <!-- Card 3 -->
-      <div class="bg-gray-100 rounded-xl p-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+      <div class="bg-gray-200 rounded-xl border text-gray-600 border-gray-300 p-6 opacity-60">
         <h2 class="text-xl font-semibold mb-2">Visualization</h2>
-        <p class="text-sm text-gray-600">Visualize calming scenes to relax deeply.</p>
+        <p class="text-sm">Visualize calming scenes to relax deeply.</p>
       </div>
     </div>
   </section>
