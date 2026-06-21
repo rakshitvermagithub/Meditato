@@ -5,16 +5,16 @@
 {% endblock %}
 
 {% block main %}
+<a href="/mantra" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >
+  x
+</a>
 <div class="max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-200px)] text-center">
   <div id="recordBtn" class="w-64 h-64 bg-gray-200 rounded-full flex justify-center items-center mb-10 shadow-inner shadow-gray-300/50 shadow-2xl transition-all duration-300 ease-in-out">
-      <span id="recordBtnText" class="text-3xl font-semibold text-gray-800 select-none">Tap to Start/Stop Recording</span>
+      <span id="recordBtnText" class="text-3xl font-semibold text-gray-800 select-none">Tap to Start Recording</span>
   </div>
   <p class="text-xl text-gray-500 mt-[-20px] mb-12" id="recordingPrompt"></p>
   <p>Saved Mantra:<h3 id="savedMantra"></h3></p>
 </div>
-<a href="/mantra" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >
-  x
-</a>
 {% endblock %}
 
 {% block script %} 

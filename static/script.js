@@ -5,73 +5,101 @@ const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpe
 document.addEventListener('DOMContentLoaded', () => {
     const recordBtn = document.getElementById('recordBtn');
     const recordBtnText = document.getElementById('recordBtnText');
+    const recordingPrompt = document.getElementById('recordingPrompt');
     const savedMantra = document.getElementById('savedMantra');
 
-    // Recording and saving mantra
     if (recordBtn) {
-        recordBtn.addEventListener('click', () => { 
-            recordBtnText.textContent = "Recording..."
-     
-            // Form a speech recognition object
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'en-US';
-            recognition.interimResults = false;
+        const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-            // Optionally add grammar list
-            const grammar = '#JSGF V1.0; grammar mantra; public <mantra> = ohm namah shivaya | hare krishna hare krishna krishna hare hare hare ram hare ram ram ram hare hare | ohm | jai shree krishna'
-            const speechRecognitionList = new SpeechGrammarList();
-            speechRecognitionList.addFromString(grammar, 1);
-            recognition.grammars = speechRecognitionList;
+        if (!SpeechRecognitionAPI) {
+            recordBtnText.textContent = "Speech recognition not supported in this browser";
+        } else {
+            let recognition = null;
+            let isRecording = false;
+            let finalTranscript = '';
 
-            recognition.start();
-
-            console.log('recognition started');
-
-            // Fetch results when available
-            recognition.addEventListener("result", (event) => {
-
-                // mantra using results fetched in json
-                const mantra_to_save = event.results[0][0].transcript;
-                if (mantra_to_save){
-                    savedMantra.textContent = `${mantra_to_save}`;
-                }
-                else {
-                    savedMantra.textContent = "Mantra to save is null";
-                }
-                
-                // Need to choose one among both mantra or finalTranscript
-                
-
-                // finaltranscript using something I don't remeber rn 
-                let finalTranscript = '';
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) {
-                    finalTranscript += event.results[i][0].transcript;
-                    }
-                }
-
-                // Send to backend
-                if (finalTranscript) {
-                    fetch ('/save_mantra', {
-                        method: 'POST',
-                        headers: {
-                            'Content-type': 'application/json'
-                        },
-                        body: JSON.stringify({ mantra_recorded: finalTranscript })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data.message);
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
-                }
-                else {
-                    console.log("finalTranscript did not work");
+            recordBtn.addEventListener('click', () => {
+                if (!isRecording) {
+                    startRecording();
+                } else {
+                    // Just ask it to stop — actual cleanup/save happens in the 'end' handler
+                    recordBtnText.textContent = "Processing...";
+                    recognition.stop();
                 }
             });
-        });
+
+            function startRecording() {
+                finalTranscript = '';
+                savedMantra.textContent = '';
+                recordingPrompt.textContent = '';
+
+                recognition = new SpeechRecognitionAPI();
+                recognition.lang = 'en-US';
+                recognition.continuous = true;     // keep listening across pauses
+                recognition.interimResults = true; // lets us show live text as they speak
+
+                // Grammar list isn't supported everywhere, so guard it
+                const SpeechGrammarListAPI = window.SpeechGrammarList || window.webkitSpeechGrammarList;
+                if (SpeechGrammarListAPI) {
+                    const grammar = '#JSGF V1.0; grammar mantra; public <mantra> = ohm namah shivaya | hare krishna hare krishna krishna hare hare hare ram hare ram ram ram hare hare | ohm | jai shree krishna';
+                    const speechRecognitionList = new SpeechGrammarListAPI();
+                    speechRecognitionList.addFromString(grammar, 1);
+                    recognition.grammars = speechRecognitionList;
+                }
+
+                recognition.addEventListener('result', (event) => {
+                    let interimTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript + ' ';
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    // Live preview while they're still talking
+                    recordingPrompt.textContent = interimTranscript || finalTranscript;
+                });
+
+                recognition.addEventListener('error', (event) => {
+                    console.error('Speech recognition error:', event.error);
+                });
+
+                recognition.addEventListener('end', () => {
+                    isRecording = false;
+                    recordBtnText.textContent = "Tap to Start Recording";
+                    saveMantra();
+                });
+
+                recognition.start();
+                isRecording = true;
+                recordBtnText.textContent = "Recording... Tap to Stop";
+            }
+
+            function saveMantra() {
+                const mantra_to_save = finalTranscript.trim();
+                recordingPrompt.textContent = '';
+
+                if (!mantra_to_save) {
+                    savedMantra.textContent = "No mantra captured — try again.";
+                    return;
+                }
+
+                savedMantra.textContent = mantra_to_save;
+
+                fetch('/save_mantra', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mantra_recorded: mantra_to_save })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data.message);
+                    window.location.href = '/mantra';
+                })
+                .catch((error) => console.error("Error:", error));
+            }
+        }
     }
 
     // Click Event Delegation 
