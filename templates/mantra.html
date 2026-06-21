@@ -16,62 +16,71 @@
      
     <!-- Automatic Chanting container -->
     <div class="flex justify-center gap-8 mb-8">
+         <!-- Record a new mantra -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-center justify-between w-full h-[320px] transition-all duration-200 hover:shadow-xl border border-gray-100">
+            <div class="text-center">
+                <p class="text-2xl font-semibold mb-3 text-gray-800">Record your own</p>
+                <p class="text-base text-gray-500 max-w-xs">Record your personalized mantra, and let our system handle the counting automatically.</p>
+            </div>
+            <div class="p-3.5 text-gray-600 border border-2 border-gray-400 rounded-full flex items-center justify-center my-1">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 003-3v-4.5a3 3 0 10-6 0v4.5a3 3 0 003 3z" />
+                </svg>
+            </div>
+            <a href="/record" class="w-full sm:w-auto text-center inline-block px-10 py-3.5 rounded-full text-white bg-blue-600 font-semibold text-lg transition-all duration-200 hover:bg-blue-700 hover:translate-y-[-2px] hover:shadow-lg focus:ring-4 focus:ring-blue-200">
+                Record your own
+            </a>
+        </div>
         
-        <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-center justify-between w-full max-w-md min-h-[250px]">
-            <p class="text-2xl font-semibold mb-3">Choose the Mantra here</p>
-            <p class="text-base text-gray-500 mb-8">to count automatically as you chant, increasing focus.</p>
+        <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-center justify-between w-full h-[320px] transition-all duration-200 hover:shadow-xl border border-gray-100">
+            <div class="text-center w-full">
+                <p class="text-2xl font-semibold mb-3 text-gray-800">Choose the Mantra here</p>
+                <p class="text-base text-gray-500 mb-5">Select a recorded session to count automatically as you chant.</p>
+            </div>
             
             <div class="w-full"> 
-                <!-- Form to submit to chanting page with selected saved mantra -->
-                <form action="/chanting" method="post">
-
-                    <!-- Container for saved mantras -->
-                    <div class="mb-4 max-h-48 overflow-y-auto border border-gray-300 rounded-md bg-white">
-                        {% if mantras %}
-                            {% for mantra in mantras %}
-                                <div class="flex items-center justify-between p-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 group">
-                                    <!-- Saved Mantras -->
-                                    <label class="flex items-center flex-1 cursor-pointer">
-                                        <input type="radio" name="selected_mantra" value="{{ mantra['mantra'] }}" class="mr-3 text-blue-600 focus:ring-blue-500">
-                                        <span class="text-sm text-gray-700 flex-1">{{ mantra['mantra'] }}</span>
-                                    </label>
-                                    <button type="button" 
-                                            class="text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 delete-mantra-btn" 
-                                            data-mantra="{{ mantra['mantra'] }}"
-                                            title="Delete mantra">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <div class="p-4 text-gray-500 text-center">
-                                No mantras recorded yet.
+                <form action="/chanting" method="post" class="flex flex-col gap-4">
+                    <div class="relative w-full flex gap-2 items-center">
+                        <div class="relative flex-1">
+                            <select id="mantraSelect" name="selected_mantra" class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 pr-10 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none text-sm transition-all cursor-pointer">
+                                {% if mantras %}
+                                    <option value="" disabled selected>Select from your saved mantras</option>
+                                    {% for mantra in mantras %}
+                                        <option value="{{ mantra['mantra'] }}">{{ mantra['mantra'] }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    <option value="" disabled selected>No mantras recorded yet</option>
+                                {% endif %}
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </div>
-                        {% endif %}
+                        </div>
+
+                        <button type="button" 
+                                id="deleteMantraBtn"
+                                class="text-gray-400 hover:text-red-600 hover:bg-red-50 border border-gray-200 hover:border-red-200 rounded-xl p-3 transition-all duration-200" 
+                                title="Delete selected mantra"
+                                disabled>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
                     </div>
                     
-                    <button type="submit" class="w-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded transition-colors duration-200">
-                        Start
+                    <button type="submit" class="w-full bg-transparent hover:bg-blue-600 text-blue-600 font-semibold hover:text-white py-3 px-4 border border-blue-600 hover:border-transparent rounded-xl transition-all duration-200 text-center">
+                        Start Session
                     </button>
                 </form>
             </div>
         </div>
-        
-        <!-- Record a new mantra -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-center justify-between w-full max-w-md min-h-[250px]">
-            <p class="text-2xl font-semibold mb-3">Record your own</p>
-            <p class="text-base text-gray-500 mb-8">Record your mantra, and count automatically</p>
-            <a href="/record" class="inline-block px-8 py-3 rounded-full text-white bg-apple-blue font-semibold text-lg transition-all duration-200 hover:bg-blue-600 hover:translate-y-[-2px] hover:shadow-md">Record your own</a>
-        </div>
     </div>
     
     <!-- Manual chanting option -->
-    <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-center justify-between w-full max-w-md min-h-[250px] mx-auto">
+    <div class="bg-gray-100 rounded-2xl opacity-50 text-gray-600 border border-gray-300 p-8 shadow-lg flex flex-col items-center justify-between w-full max-w-md min-h-[250px] mx-auto">
         <p class="text-2xl font-semibold mb-3">Tap and count</p>
         <p class="text-base text-gray-500 mb-8">Count manually as you chant by tapping, requires your active tapping to count.</p>
-        <a href="#" class="inline-block px-8 py-3 rounded-full text-white bg-apple-blue font-semibold text-lg transition-all duration-200 hover:bg-blue-600 hover:translate-y-[-2px] hover:shadow-md">Start tapping</a>
+        <a href="#" class="inline-block px-8 py-3 rounded-full text-white bg-blue-600 font-semibold text-lg">Start tapping</a>
     </div>
 
 </div>
@@ -79,4 +88,20 @@
 
 {% block script %}
 <script src="../static/script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mantra select 
+        const selectEl = document.getElementById('mantraSelect');
+        const deleteBtn = document.getElementById('deleteMantraBtn');
+
+        selectEl.addEventListener('change', function() {
+            if (this.value) {
+                deleteBtn.removeAttribute('disabled');
+                deleteBtn.classList.remove('text-gray-400', 'border-gray-200');
+                deleteBtn.classList.add('text-gray-600', 'border-gray-300');
+                deleteBtn.setAttribute('data-mantra', this.value);
+            }
+        });
+    });
+</script> 
 {% endblock %}

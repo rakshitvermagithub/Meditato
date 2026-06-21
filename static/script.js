@@ -77,14 +77,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Click Event Delegation 
     document.addEventListener('click', function(e) {
 
-        // Deleting saved Mantra
-        if (e.target.closest('.delete-mantra-btn')) {
+        // Deleting saved Mantra (targeting ID instead of class for reliability)
+        if (e.target.closest('#deleteMantraBtn')) {
             console.log('Delete button clicked!');
-            const button = e.target.closest('.delete-mantra-btn');
-            const mantraToDelete = button.getAttribute('data-mantra');
+            
+            // Find the select dropdown element
+            const mantraSelect = document.getElementById('mantraSelect');
+            
+            // Get the currently selected mantra value
+            const mantraToDelete = mantraSelect ? mantraSelect.value : null;
             console.log('Mantra to delete:', mantraToDelete);
             
-            // Confirms the user before deleting
+            // Ensure a valid mantra is selected before proceeding
+            if (!mantraToDelete) {
+                alert('Please select a mantra to delete.');
+                return;
+            }
+            
+            // Confirms with the user before deleting
             if (confirm('Are you sure you want to delete this mantra?')) {
 
                 const form = document.createElement('form');
@@ -214,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 100);
                 }
                 else {
-                    console.log("Recognition ended, Hare Krishna! Target completed!");
+                    console.log("Recognition ended, Target completed!");
                 }
             }        
         }
