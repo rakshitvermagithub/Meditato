@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (globalCounter == originalTarget) {
                         usedRecognition.stop();
 
-                        completionAudio.volume = 1.0;
+                        completionAudio.volume = 1;
                         completionAudio.play().catch(err => console.log("Audio playback blocked or failed:", err));
 
                         let endTime = Date.now();
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
             recognition.continuous = true;
 
             // Variable mantra in grammer to be recognized as selected by the user
-            const grammar = '#JSGF V1.0; grammar mantra; public <mantra> = '
+            const grammar = '#JSGF V1.0; grammar mantra; public <mantra> = Om Namah Shivay | Om | Jay Shri Krishna'
 
             const speechRecognitionList = new SpeechGrammarList();
             speechRecognitionList.addFromString(grammar, 1);
