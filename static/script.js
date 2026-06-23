@@ -182,6 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
             usedRecognition.onend = null;
             
             usedRecognition.start();
+            if (!window.chantingStartTime) {
+                window.chantingStartTime = Date.now(); 
+            }            
             console.log("started recording");
 
             // Use the passed currentCount instead of local counter
@@ -230,10 +233,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById("chantingCounter").innerHTML = globalCounter;
 
                     // If we reached the original target, stop recognition
-                    if (globalCounter >= originalTarget) {
-                        alert("Target reached! Stopping recognition.");
+                    if (globalCounter == originalTarget) {
                         usedRecognition.stop();
-                        return;
+
+                        let endTime = Date.now();
+                        let totalTimeMs = endTime - window.chantingStartTime;
+                        
+                        // Format milliseconds into Minutes and Seconds
+                        let totalSeconds = Math.floor(totalTimeMs / 1000);
+                        let minutes = Math.floor(totalSeconds / 60);
+                        let seconds = totalSeconds % 60;
+                        let timeString = `${minutes}m ${seconds}s`;
+
+                        // Inject data into the modal elements
+                        document.getElementById("modalFinalCount").innerText = globalCounter;
+                        document.getElementById("modalTimeTaken").innerText = timeString;
+
+                        // Reveal the modal box
+                        document.getElementById("completionModal").classList.remove("hidden");
                     }
                 }
             }
@@ -268,6 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reset global counter for new session
             globalCounter = 0;
             originalTarget = targetCount;
+            window.chantingStartTime = null;
 
             // hide the prompt
             targetPrompt.classList.add('hidden');

@@ -5,42 +5,61 @@
 {% endblock %}
 
 {% block main %}
-<div class="bg-gray-100 min-h-[calc(100vh_-_108px)] flex items-center justify-center relative">
+<div class="bg-gray-100 min-h-[calc(100vh_-_108px)] flex items-center justify-center relative p-4 sm:p-6 md:p-8">
 
-    <!-- Prompting at start for user's target count -->
-    <div id="targetPrompt" class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex flex-col items-center justify-center text-white z-50">
-        <div class="bg-white text-gray-800 p-8 rounded-md shadow-lg">
-            <p class="text-xl font-semibold mb-4">What's your target count today?</p>
+    <div id="targetPrompt" class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex flex-col items-center justify-center text-white z-50 p-4">
+        <div class="bg-white text-gray-800 p-6 sm:p-8 rounded-md shadow-lg w-full max-w-sm md:max-w-md mx-auto">
+            <p class="text-lg sm:text-xl font-semibold mb-4 text-center sm:text-left">What's your target count today?</p>
             <input type="number" id="targetCountInput" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter your target" value="5">
-            <button id="startChantingButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4">Start Chanting</button>
+            <button id="startChantingButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 w-full sm:w-auto transition duration-200">Start Chanting</button>
         </div>
     </div>
 
-    <!-- Chant -->
-    <div id="chantingSection" class="hidden flex flex-col items-center justify-center">
+    <div id="chantingSection" class="hidden flex flex-col items-center justify-between min-h-[50vh] w-full max-w-2xl mx-auto py-6">
 
-        <!-- Quit chanting button -->
         <div class="absolute top-4 right-4">
-            <a href="/mantra" class="text-gray-600 hover:text-gray-800">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <a href="/mantra" onclick="return confirm('Are you sure you want to stop chanting and end this session?');" class="text-gray-600 hover:text-gray-800 transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 sm:w-7 sm:h-7">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </a>
         </div>
-
-        <!-- Counter display -->
-        <div class="mb-4">
-            <p class="text-xl text-gray-700">Count: <span id="chantingCounter">0</span></p>
+        <div class="mb-6 sm:mb-8 text-center">
+            <p class="text-lg sm:text-xl md:text-2xl text-gray-700 font-medium">Count: <span id="chantingCounter" class="font-bold text-blue-600">0</span></p>
         </div>
 
-        <!-- Selected Mantra Display -->
-        <h2 id="mantraDisplay" class="text-6xl font-bold text-gray-800 text-center" style="font-size: max(6vh, 6vw);">
-            {{ selected_mantra_to_chant }}
-        </h2>
+        <div class="flex-grow flex items-center justify-center my-auto px-4">
+            <h2 id="mantraDisplay" class="font-bold text-gray-800 text-center break-words leading-tight tracking-wide" style="font-size: clamp(2rem, 5vw + 1rem, 5rem);">
+                {{ selected_mantra_to_chant }}
+            </h2>
+        </div>
         
-        <!-- Brief comment from our side -->
-        <div class="mt-2">
-            <p class="text-sm text-gray-500 underline">Start chanting, we'll let you know when you are done</p>
+        <div class="mt-12 sm:mt-16 md:mt-24 text-center">
+            <p class="text-xs sm:text-sm text-gray-500 italic border-t border-gray-200 pt-3 px-4">
+                Start chanting, we'll let you know when you are done <br> (Microphone access is required through your browser)
+            </p>
+        </div>
+
+        <div id="completionModal" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex flex-col items-center justify-center text-white z-50 p-4">
+            <div class="bg-white text-gray-800 p-6 sm:p-8 rounded-md shadow-lg w-full max-w-sm md:max-w-md mx-auto text-center">
+                <h2 class="text-2xl font-bold text-green-600 mb-2">Congratulations!</h2>
+                <p class="text-gray-600 mb-6 text-sm sm:text-base">Your session is completed successfully.</p>
+                
+                <div class="grid grid-cols-2 gap-4 border-t border-b border-gray-200 py-4 mb-6">
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-gray-400 font-semibold">Total Counts</p>
+                        <p id="modalFinalCount" class="text-2xl font-extrabold text-gray-800">0</p>
+                    </div>
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-gray-400 font-semibold">Time Taken</p>
+                        <p id="modalTimeTaken" class="text-2xl font-extrabold text-gray-800">0m 0s</p>
+                    </div>
+                </div>
+
+                <a href="/mantra" class="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200">
+                    Back to Mantra Chanting
+                </a>
+            </div>
         </div>
     </div>
 </div>
