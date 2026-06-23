@@ -5,18 +5,18 @@
 {% endblock %} 
 
 {% block main %}
-<div class="max-w-4xl mx-auto text-center">
+<div class="max-w-4xl mx-auto text-center px-4">
+    <h1 class="text-4xl font-bold mb-4">Mantra Chanting Meditation</h1>
 
-    <h1 class="text-5xl font-bold mb-5">MANTRA Meditation.</h1>
-
-    <p class="text-xl text-gray-500 max-w-2xl mx-auto mb-16">
-        Considered as an easier practice to focus and recommended by
-        Hindu god Krishna in the holy book Shrimad Bhagavat Gita.
-    </p>
-     
-    <!-- Automatic Chanting container -->
-    <div class="flex justify-center gap-8 mb-8">
-        <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-center justify-between w-full h-[320px] transition-all duration-200 hover:shadow-xl border border-gray-100">
+    <p class="text-base text-gray-500 max-w-3xl mx-auto leading-relaxed">
+        In Automatic Chanting Sessions we keep track of the mantra counts, while you focus completely on the Mantra.
+        Improves the overall focus and quality of your regular sessions, by removing the split attention problem in manual counting.
+        <br>
+        Mantra Chanting is considered an easier form of meditation to improve daily focus and reduce stress.
+    </p>     
+    
+    <div class="flex flex-col md:flex-row justify-center gap-6 lg:gap-8 m-8">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-300 flex flex-col items-center justify-between w-full min-h-[320px] md:h-[320px] transition-all duration-200 hover:shadow-xl border border-gray-100">
             <div class="text-center w-full">
                 <p class="text-2xl font-semibold mb-3 text-gray-800">Mantra list</p>
                 <p class="text-base text-gray-500 mb-5">Select a Mantra from below, start the session and let us automatically count as you chant.</p>
@@ -59,28 +59,26 @@
             </div>
         </div>
         
-        <!-- Record a new mantra -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-center justify-between w-full h-[320px] transition-all duration-200 hover:shadow-xl border border-gray-100">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-300 flex flex-col items-center justify-between w-full min-h-[320px] md:h-[320px] transition-all duration-200 hover:shadow-xl border border-gray-100">
             <div class="text-center">
                 <p class="text-2xl font-semibold mb-3 text-gray-800">Record your own</p>
-                <p class="text-base text-gray-500 max-w-xs">Record and add your personalized mantra into the mantra list.</p>
+                <p class="text-base text-gray-500 max-w-xs mx-auto">Record and add your personalized mantra into the mantra list.</p>
             </div>
             <div class="p-3.5 text-gray-600 border border-2 border-gray-400 rounded-full flex items-center justify-center my-1">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 003-3v-4.5a3 3 0 10-6 0v4.5a3 3 0 003 3z" />
                 </svg>
             </div>
-            <a href="/record" class="w-full sm:w-auto text-center inline-block px-10 py-3.5 rounded-full text-white bg-blue-600 font-semibold text-lg transition-all duration-200 hover:bg-blue-700 hover:translate-y-[-2px] hover:shadow-lg focus:ring-4 focus:ring-blue-200">
+            <a href="/record" class="w-full text-center inline-block px-10 py-3.5 rounded-full text-white bg-blue-600 font-semibold text-lg transition-all duration-200 hover:bg-blue-700 hover:translate-y-[-2px] hover:shadow-lg focus:ring-4 focus:ring-blue-200">
                 Record your own
             </a>
         </div>
     </div>
     
-    <!-- Manual chanting option -->
-    <div class="bg-gray-100 rounded-2xl opacity-50 text-gray-600 border border-gray-300 p-8 shadow-lg flex flex-col items-center justify-between w-full max-w-md min-h-[250px] mx-auto">
+    <div class="bg-gray-100 rounded-2xl opacity-50 text-gray-600 border border-gray-300 p-6 sm:p-8 shadow-lg flex flex-col items-center justify-between w-full max-w-md min-h-[250px] mx-auto">
         <p class="text-2xl font-semibold mb-3">Tap and count</p>
         <p class="text-base text-gray-500 mb-8">Count manually as you chant by tapping, requires your active tapping to count.</p>
-        <a class="inline-block px-8 py-3 rounded-full text-white bg-blue-600 font-semibold text-lg">Start</a>
+        <a class="inline-block w-full sm:w-auto px-8 py-3 rounded-full text-white bg-blue-600 font-semibold text-lg">Start</a>
     </div>
 
 </div>
