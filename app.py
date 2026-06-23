@@ -139,7 +139,9 @@ def mantra():
 
         return render_template("mantra.html", mantras=mantras, logged_in=True)
     else:
-        return render_template("mantra.html", logged_in=False)
+        # Have sample mantras
+        mantras = [{"mantra": "Jay Shri Krishna"}, {"mantra": "Om Namah Shivay"}]
+        return render_template("mantra.html", mantras=mantras, logged_in=False)
 
 @app.route("/record")
 def record():
