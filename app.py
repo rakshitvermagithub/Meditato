@@ -146,7 +146,7 @@ def mantra():
 @app.route("/record")
 def record():
     if "user_id" in session:
-        return render_template("record.html")
+        return render_template("record.html", logged_in=True)
     else:
         return redirect("/register") 
 
@@ -182,4 +182,8 @@ def chanting():
     if not selected_mantra_to_chant:
         return redirect('/mantra')
     else:
-        return render_template('automatic_chanting.html', selected_mantra_to_chant=selected_mantra_to_chant) 
+        if "user_id" not in session:
+            logged_in = False
+        else:
+            logged_in = True
+        return render_template('automatic_chanting.html', selected_mantra_to_chant=selected_mantra_to_chant, logged_in=logged_in) 
