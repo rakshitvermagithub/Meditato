@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Grammar list isn't supported everywhere, so guard it
                 const SpeechGrammarListAPI = window.SpeechGrammarList || window.webkitSpeechGrammarList;
                 if (SpeechGrammarListAPI) {
-                    const grammar = '#JSGF V1.0; grammar mantra; public <mantra> = ohm namah shivaya | hare krishna hare krishna krishna hare hare hare ram hare ram ram ram hare hare | ohm | jai shree krishna';
+                    const grammar = '#JSGF V1.0; grammar mantra; public <mantra> = Om Namah Shivay | Om | Jay Shri Krishna';
                     const speechRecognitionList = new SpeechGrammarListAPI();
                     speechRecognitionList.addFromString(grammar, 1);
                     recognition.grammars = speechRecognitionList;
