@@ -1,6 +1,7 @@
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
 const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent
+const completionAudio = new Audio("/static/completion_audio_03.mp3")
 
 document.addEventListener('DOMContentLoaded', () => {
     const recordBtn = document.getElementById('recordBtn');
@@ -235,6 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // If we reached the original target, stop recognition
                     if (globalCounter == originalTarget) {
                         usedRecognition.stop();
+
+                        completionAudio.volume = 1.0;
+                        completionAudio.play().catch(err => console.log("Audio playback blocked or failed:", err));
 
                         let endTime = Date.now();
                         let totalTimeMs = endTime - window.chantingStartTime;
