@@ -13,6 +13,9 @@ Session(app)
 db = SQL(f"sqlite:///{app.config['DATABASE_FILE']}")
 save_folder = app.config['UPLOAD_FOLDER']
 
+# Create database schema if does not exist
+db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL);")
+db.execute("CREATE TABLE IF NOT EXISTS mantras (id INTEGER NOT NULL, mantra TEXT NOT NULL, FOREIGN KEY(id) REFERENCES users(id));")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
